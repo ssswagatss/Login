@@ -75,5 +75,10 @@ namespace WebSite.Controllers
             Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
     }
 }

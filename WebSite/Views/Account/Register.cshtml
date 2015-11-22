@@ -1,0 +1,102 @@
+﻿@model WebSite.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+<br />
+<br />
+<br />
+<br />
+<h2>Register for an account</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @id = "userName" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @id = "password" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @id = "confirmPassword" } })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<div id="result">
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    $(document).ready(function () {
+        $('form').submit(function (e) {
+            e.preventDefault();
+
+            var baseUrl = "http://localhost:54486/api/Account/Register"
+            //var data = new FormData();
+            //data.append('UserName', 'ssswagatss@gmail.com');
+            //data.append('Password', 'mkr5htgi');
+
+            var data = {
+                'UserName': $("#userName").val(),
+                'Password': $("#password").val(),
+                'ConfirmPassword': $("#confirmPassword").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: baseUrl,
+                data: data,
+                dataType: "json",
+                complete: function (response) {
+                    $('#result').html(response);
+                    console.log(response);
+                },
+                success: function (response) {
+                    //if (Modernizr.localstorage) {
+                    //    window.sessionStorage.setItem('userInfo', JSON.stringify(response));
+                    //    location.replace("/Admin");
+                    //}
+                    console.log(response);
+                    $('#result').html(response);
+
+                }
+            });
+
+        });
+    });
+    </script>
+}
+
+
+
+
